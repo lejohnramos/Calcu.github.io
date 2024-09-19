@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        .result {
+            font-size: 24px; 
+            font-weight: bold;
+            color: #333;
+        }
+        form {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px 0;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grade Calculator</h1>
+        
+        <form id="grade-form">
+            <label for="prelim">Enter your prelim grade:</label>
+            <input type="text" id="prelim" name="prelim" required><br><br>
+            
+            <label for="total_unpredictable">Enter your total unpredictable grade:</label>
+            <input type="text" id="total_unpredictable" name="total_unpredictable" required><br><br>
+
+            <input type="submit" value="Calculate"><br><br>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('grade-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const prelim = document.getElementById('prelim').value;
+            const total_unpredictable = document.getElementById('total_unpredictable').value;
+
+            const response = await fetch('http://127.0.0.1:5000/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prelim, total_unpredictable }),
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = `Total grade required for Midterm and Finalterm to pass: ${result.final_grade}`;
+        });
+    </script>
+</body>
+</html>
