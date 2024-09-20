@@ -1,25 +1,45 @@
-<py-script>
-    from pyscript import Element
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator with PyScript</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+    <h1>Grade Calculator</h1>
+    
+    <label for="prelim">Enter your prelim grade:</label>
+    <input type="number" id="prelim" required><br><br>
+    
+    <label for="total_unpredictable">Enter your total unpredictable grade:</label>
+    <input type="number" id="total_unpredictable" required><br><br>
+    
+    <button id="calculate">Calculate</button>
+    
+    <h2 id="result"></h2>
 
-    def calculate_final_grade(prelim, total_unpredictable):
-        total = prelim * 0.2
-        intermediate_total = total_unpredictable - total
-        final_grade = intermediate_total / 0.8
-        return final_grade
+    <py-script>
+        from pyscript import Element
 
-    def show_result(event):
-        prelim_element = Element("prelim")
-        total_unpredictable_element = Element("total_unpredictable")
-        result_element = Element("result")
-        
-        try:
-            prelim = float(prelim_element.value)
-            total_unpredictable = float(total_unpredictable_element.value)
-            final_grade = calculate_final_grade(prelim, total_unpredictable)
-            result_element.element.innerHTML = f"Final grade required: {final_grade}"
-        except ValueError:
-            result_element.element.innerHTML = "Invalid input, please enter valid numbers."
+        def calculate_final_grade(prelim, total_unpredictable):
+            total = prelim * 0.2
+            intermediate_total = total_unpredictable - total
+            final_grade = intermediate_total / 0.8
+            return final_grade
 
-    # Add event listener
-    Element("calculate").element.onclick = show_result
-</py-script>
+        def show_result(event):
+            prelim_value = float(Element("prelim").value)
+            total_unpredictable_value = float(Element("total_unpredictable").value)
+            final_grade = calculate_final_grade(prelim_value, total_unpredictable_value)
+            Element("result").element.innerHTML = f"Final grade required: {final_grade:.2f}"
+
+        # Attach the event listener to the button
+        def setup():
+            Element("calculate").element.onclick = show_result
+
+        setup()  # Call the setup function
+    </py-script>
+</body>
+</html>
