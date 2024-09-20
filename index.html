@@ -19,6 +19,7 @@
     <button id="calculate">Calculate</button>
     
     <h2 id="result"></h2>
+    <h3 id="to-pass" style="display: none;">To pass: <span id="final-grade"></span></h3>
 
     <py-script>
         from pyscript import Element
@@ -33,7 +34,9 @@
             prelim_value = float(Element("prelim").value)
             total_unpredictable_value = float(Element("total_unpredictable").value)
             final_grade = calculate_final_grade(prelim_value, total_unpredictable_value)
-            Element("result").element.innerHTML = f"Final grade required: {final_grade:.2f}"
+            Element("result").element.innerHTML = f"Requirement Grade for Midterm and Finalterm: {final_grade:.2f}"
+            Element("final-grade").element.innerHTML = f"{final_grade:.2f}"
+            Element("to-pass").element.style.display = "block"
 
         # Attach the event listener to the button
         def setup():
