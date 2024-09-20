@@ -3,80 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grade Calculator</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-        }
-        .result {
-            font-size: 24px; 
-            font-weight: bold;
-            color: #333;
-        }
-        form {
-            margin: 20px 0;
-        }
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            max-width: 300px;
-            margin: 10px 0;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Grade Calculator with PyScript</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Grade Calculator</h1>
-        
-        <form id="grade-form">
-            <label for="prelim">Enter your prelim grade:</label>
-            <input type="text" id="prelim" name="prelim" required><br><br>
-            
-            <label for="total_unpredictable">Enter your total unpredictable grade:</label>
-            <input type="text" id="total_unpredictable" name="total_unpredictable" required><br><br>
+    <h1>Grade Calculator</h1>
+    
+    <label for="prelim">Enter your prelim grade:</label>
+    <input type="number" id="prelim"><br><br>
+    
+    <label for="total_unpredictable">Enter your total unpredictable grade:</label>
+    <input type="number" id="total_unpredictable"><br><br>
+    
+    <button id="calculate">Calculate</button>
+    
+    <h2 id="result"></h2>
 
-            <input type="submit" value="Calculate"><br><br>
-        </form>
+    <py-script>
+        def calculate_final_grade(prelim, total_unpredictable):
+            total = prelim * 0.2
+            intermediate_total = total_unpredictable - total
+            final_grade = intermediate_total / 0.8
+            return final_grade
 
-        <div id="result" class="result"></div>
-    </div>
+        def show_result(event):
+            prelim = float(document.getElementById("prelim").value)
+            total_unpredictable = float(document.getElementById("total_unpredictable").value)
+            final_grade = calculate_final_grade(prelim, total_unpredictable)
+            document.getElementById("result").innerHTML = f"Final grade required: {final_grade}"
 
-    <script>
-        const form = document.getElementById('grade-form');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const prelim = document.getElementById('prelim').value;
-            const total_unpredictable = document.getElementById('total_unpredictable').value;
-
-            const response = await fetch('http://127.0.0.1:5000/calculate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ prelim, total_unpredictable }),
-            });
-
-            const result = await response.json();
-            document.getElementById('result').innerText = `Total grade required for Midterm and Finalterm to pass: ${result.final_grade}`;
-        });
-    </script>
+        document.getElementById("calculate").addEventListener("click", show_result)
+    </py-script>
 </body>
 </html>
