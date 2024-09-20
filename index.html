@@ -58,7 +58,7 @@
             prelim_value = float(Element("prelim").value)
             total_unpredictable_value = float(Element("total_unpredictable").value)
             final_grade = calculate_final_grade(prelim_value, total_unpredictable_value)
-            Element("result").element.innerHTML = f"Requirement Grade for Midterm and Finalterm: {final_grade:.2f}"
+            Element("result").element.innerHTML = f"Requirement Grade for Midterm and Finalterm for you to pass: {final_grade:.2f}"
 
         # Attach the event listener to the button
         def setup():
