@@ -1,39 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grade Calculator with PyScript</title>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-</head>
-<body>
-    <h1>Grade Calculator</h1>
-    
-    <label for="prelim">Enter your prelim grade:</label>
-    <input type="number" id="prelim"><br><br>
-    
-    <label for="total_unpredictable">Enter your total unpredictable grade:</label>
-    <input type="number" id="total_unpredictable"><br><br>
-    
-    <button id="calculate">Calculate</button>
-    
-    <h2 id="result"></h2>
+<py-script>
+    from pyscript import Element
 
-    <py-script>
-        def calculate_final_grade(prelim, total_unpredictable):
-            total = prelim * 0.2
-            intermediate_total = total_unpredictable - total
-            final_grade = intermediate_total / 0.8
-            return final_grade
+    def calculate_final_grade(prelim, total_unpredictable):
+        total = prelim * 0.2
+        intermediate_total = total_unpredictable - total
+        final_grade = intermediate_total / 0.8
+        return final_grade
 
-        def show_result(event):
-            prelim = float(document.getElementById("prelim").value)
-            total_unpredictable = float(document.getElementById("total_unpredictable").value)
+    def show_result(event):
+        prelim_element = Element("prelim")
+        total_unpredictable_element = Element("total_unpredictable")
+        result_element = Element("result")
+        
+        try:
+            prelim = float(prelim_element.value)
+            total_unpredictable = float(total_unpredictable_element.value)
             final_grade = calculate_final_grade(prelim, total_unpredictable)
-            document.getElementById("result").innerHTML = f"Final grade required: {final_grade}"
+            result_element.element.innerHTML = f"Final grade required: {final_grade}"
+        except ValueError:
+            result_element.element.innerHTML = "Invalid input, please enter valid numbers."
 
-        document.getElementById("calculate").addEventListener("click", show_result)
-    </py-script>
-</body>
-</html>
+    # Add event listener
+    Element("calculate").element.onclick = show_result
+</py-script>
