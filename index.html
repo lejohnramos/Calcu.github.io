@@ -28,6 +28,14 @@
         h2 {
             margin-top: 20px;
         }
+        .note {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+            font-size: 0.9em;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -44,6 +52,9 @@
         <button id="calculate">Calculate</button>
         
         <h2 id="result" style="margin-top: 20px;"></h2>
+        <div id="note" class="note" style="display: none;">
+            If no number pops out, it means better luck next time, because it's above 99.
+        </div>
     </div>
 
     <py-script>
@@ -59,7 +70,14 @@
             prelim_value = float(Element("prelim").value)
             total_unpredictable_value = float(Element("total_unpredictable").value)
             final_grade = calculate_final_grade(prelim_value, total_unpredictable_value)
-            Element("result").element.innerHTML = f"Requirement Grade for Midterm and Finalterm for you to pass: {final_grade:.2f}"
+            
+            # Check if the required grade is above 99
+            if final_grade > 99:
+                Element("result").element.innerHTML = "I'm sorry, you can't achieve the grade you wanted."
+                Element("note").element.style.display = "block"
+            else:
+                Element("result").element.innerHTML = f"Requirement Grade for Midterm and Finalterm for you to pass: {final_grade:.2f}"
+                Element("note").element.style.display = "none"
 
         # Attach the event listener to the button
         def setup():
